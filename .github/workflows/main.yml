@@ -31,14 +31,16 @@ jobs:
         
       - uses: actions/checkout@v2
 
-      - name: Log into registry
-        run: echo "${{ secrets.PACKAGE_ACCESS }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
       - name: Unit Test
         run: ./test.sh
 
       - name: Integration Test
-        run: ./integration-test.sh
+        run: |
+          # Log into the github packages with a shared secret
+          echo "${{ secrets.PACKAGE_ACCESS }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          
+          # Run integration tests.
+          ./integration-test.sh
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
