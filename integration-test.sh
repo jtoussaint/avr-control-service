@@ -26,7 +26,7 @@ docker run \
     -p "${AVR_PORT}:${AVR_PORT}" \
     -d \
     --network ${NETWORK_NAME} \
-    --network-alias ${AVR_NAME} \
+    --network-alias "foo" \
     docker.pkg.github.com/jtoussaint/mock-denon-avr/mock-denon-avr:latest
 
 
@@ -40,6 +40,12 @@ docker run \
     run "mute_avr.json" \
     --environment="integration.postman_environment.json"
 
+# Check to see if the tests passed
+if [[ $? -ne 0 ]]
+then
+    echo "Tests failed"
+    exit 1
+fi
 
 #
 # Clean up
