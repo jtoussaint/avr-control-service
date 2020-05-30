@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build . -t avr-service
+docker build . -t avr-control-service

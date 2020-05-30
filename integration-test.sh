@@ -19,7 +19,7 @@ docker run \
     -d \
     --network ${NETWORK_NAME} \
     --network-alias ${SERVICE_NAME} \
-    avr-service:latest
+    avr-control-service:latest
 
 docker run \
     -e "PORT=${AVR_PORT}" \
