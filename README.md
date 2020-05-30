@@ -1,33 +1,35 @@
 # AVR Control
 
-A simple API for controlling an Audio Video Receiver (AVR), specifically a Denon S750H.  This project consist of  three
-components:
-
-* **[avr-svc](avr-svc)** - A service that provides a REST Api in front of the AVR.
-* **[mock-avr](mock-avr)** - A service that mocks the behavior of the AVR for integration tests.
-* **[postman-collections](postman-collections)** - Integration tests built and run with postman/newman
+A simple API for controlling an Audio Video Receiver (AVR), specifically a Denon S750H.  
 
 The behavior of the Api can be found [here](avr.apib).
 
+The service talks to an AVR that impliments this [protocol](http://assets.eu.denon.com/DocumentMaster/DE/AVR2113CI_1913_PROTOCOL_V02.pdf).
+
 ## Getting Started
 
-After cloning this repo, run the `build-avr-svc.sh` script to build and push an image of the service locally.
+After cloning this repo, run the `build.sh` script to build and push an image of the service locally.
 
-Additionally, the mock service can be built and pushed to your local registry by running the `build-mock-avr.sh` script.
+### Unit tests
 
-### Running unit tests
+Tests for the service can be run by running `go test`.  Alternativly tests are run as part of the docker build in `build.sh`.
 
-Tests for the service can be run by running `go test` in the `avr-svc` directory.  Alternativly tests are run as part of the docker build in `build-avr-svc.sh`.
+### Integration tests
+
+Before running integration tests you need to have an authenticated session with github packages.  You can do this by creating a PAT then running the following command.  Replace / set `$GITHUB_PAT` and `$USER_NAME` before running the script.
+
+`echo "${{ $GITHUB_PAT }}" | docker login docker.pkg.github.com -u $USER_NAME --password-stdin`
+
+Integration tests can be run by running `integration-test.sh`.  These tests will pull a container that acts as a mock AVR from [https://github.com/jtoussaint/mock-denon-avr](https://github.com/jtoussaint/mock-denon-avr) and runs the tests found in the `postman-collections` folder.
 
 ### Running the service
 
 The service can be run locally in disconnected mode by running `run-local.sh` after building the image.
+
+The service requires the following environment vairables:
 
 | Env Var  |      Description      |
 |----------|:--------------|
 | AVR_HOST | The hostname / ip address of the AVR. |
 | AVR_PORT | The port that the AVR listens on (23) |
 
-### Running integration tests
-
-Integration tests can be built by running the `run-integration-tests.sh` script.  This will build a new docker network, deploy the `avr-svc` and `mock-avr` to it, then run the postman collections in the `postman-collections` folder via newman.
