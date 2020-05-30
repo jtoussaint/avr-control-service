@@ -3,6 +3,8 @@ package service
 import (
 	"bytes"
 	"testing"
+
+	"github.com/jtoussaint/avr-control/adapter"
 )
 
 func TestCommandStatusString(t *testing.T) {
@@ -26,8 +28,8 @@ func TestCommandStatusMarshalJSON(t *testing.T) {
 		}
 	}
 
-	theory(CommandStatus(MuteOff), "Failure")
-	theory(CommandStatus(MuteOn), "Success")
+	theory(CommandStatus(adapter.MuteOff), "Failure")
+	theory(CommandStatus(adapter.MuteOn), "Success")
 }
 
 func TestCommandStatusUnMarshalJSON(t *testing.T) {

@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/jtoussaint/avr-control/adapter"
-	"github.com/jtoussaint/avr-control/service"
 )
 
 type mockAdapter struct {
@@ -124,7 +123,7 @@ func TestMuteCommandRequestHandler(t *testing.T) {
 	}, "{}")
 
 	theory(&mockAdapter{
-		commandResponse:        service.MuteCommmandResponse{Status: service.CommandSuccess},
+		commandResponse:        MuteCommmandResponse{Status: CommandSuccess},
 		expectedAVR:            adapter.AVR{MuteStatus: adapter.MuteOff},
 		expectedHTTPStatusCode: http.StatusOK,
 		successfulDial:         true,

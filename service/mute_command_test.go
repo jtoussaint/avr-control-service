@@ -3,14 +3,16 @@ package service
 import (
 	"errors"
 	"testing"
+
+	"github.com/jtoussaint/avr-control/adapter"
 )
 
 type mockAVRAdapter struct {
 	calledSendMuteCommandSpy        bool
-	currentMuteStatus               MuteStatus
+	currentMuteStatus               adapter.MuteStatus
 	expectError                     bool
 	expectedStatus                  CommandStatus
-	newMuteStatus                   MuteStatus
+	newMuteStatus                   adapter.MuteStatus
 	shouldHaveCalledSendMuteCommand bool
 }
 
@@ -26,19 +28,19 @@ func (m *mockAVRAdapter) Dial() (ok bool, err error) {
 	return true, nil
 }
 
-func (m *mockAVRAdapter) ReadAVR() (avr AVR) {
-	return AVR{
+func (m *mockAVRAdapter) ReadAVR() (avr adapter.AVR) {
+	return adapter.AVR{
 		MuteStatus: m.currentMuteStatus,
 	}
 }
 
-func (m *mockAVRAdapter) SendMuteCommand(s MuteStatus) (err error) {
+func (m *mockAVRAdapter) SendMuteCommand(s adapter.MuteStatus) (err error) {
 	m.calledSendMuteCommandSpy = true
 
 	return nil
 }
 
-func (m *mockAVRAdapter) ReadMuteStatus(avr *AVR) (err error) {
+func (m *mockAVRAdapter) ReadMuteStatus(avr *adapter.AVR) (err error) {
 	return nil
 }
 
@@ -68,18 +70,18 @@ func TestHandle(t *testing.T) {
 	})
 
 	theory(mockAVRAdapter{
-		currentMuteStatus:               MuteOff,
+		currentMuteStatus:               adapter.MuteOff,
 		expectError:                     false,
 		expectedStatus:                  CommandSuccess,
-		newMuteStatus:                   MuteOn,
+		newMuteStatus:                   adapter.MuteOn,
 		shouldHaveCalledSendMuteCommand: true,
 	})
 
 	theory(mockAVRAdapter{
-		currentMuteStatus:               MuteOff,
+		currentMuteStatus:               adapter.MuteOff,
 		expectError:                     false,
 		expectedStatus:                  CommandSuccess,
-		newMuteStatus:                   MuteOff,
+		newMuteStatus:                   adapter.MuteOff,
 		shouldHaveCalledSendMuteCommand: false,
 	})
 }
