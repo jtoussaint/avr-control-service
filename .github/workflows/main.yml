@@ -36,6 +36,9 @@ jobs:
 
       - name: Integration Test
         run: |
+          # Build the image we want to test
+          docker build . --file Dockerfile --tag $IMAGE_NAME
+          
           # Log into the github packages with a shared secret
           echo "${{ secrets.PACKAGE_ACCESS }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
           
