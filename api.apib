@@ -1,0 +1,88 @@
+FORMAT: 1A
+
+# AVR Control
+
+AVR control is a simple API to manage an Audio Video Reciever (AVR) on the network.  Currently
+it supports a Denon AVR-S750H
+
+# Group Status
+
+Resources related to the status and operation of the AVR.
+
+## Status [/]
+
+### List Status [GET]
+
+Returns the current status of the AVR.
+
++ Response 200 (application/json)
+
+    Returns the current status of the AVR
+
+    + Body
+
+            {
+                "name": "Denon",
+                "muteStatus": "Off"
+            }
+
++ Response 500 (application/json)
+
+    Indicates that there was a problem retrieving the status
+
+    + Body
+
+## Mute [/mute]
+
+### Toggle Mute Status [PUT]
+
+Toggles the mute status ```On|Off``` on the AVR
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "newMuteStatus":"On"
+            }
+
++ Response 200 (application/json)
+
+    Indicates a successfull mute toggle
+
+    + Body
+
+            {
+                "status": "Success"
+            }
+
++ Response 400 (application/json)
+
+    Indicates that a malformed request was sent
+
+    + Body
+
++ Response 500 (application/json)
+
+    Indicates that there was an internal error processing the request
+
+    + Body
+
+## Health [/healthz]
+
+### Return Health [GET]
+
+This endpoint is intended to be called by orchestrators who want to 
+determine the health of the service.
+
++ Response 200 (application/json)
+
+    Returns if the api is healthy, which includes being able to connect to the AVR.
+
+    + Body
+
++ Response 500 (application/json)
+
+    Returns if the api is unhealthy, including unable to talk to the AVR.
+
+    + Body

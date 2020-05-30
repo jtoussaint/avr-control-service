@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "f2d1fda2-40c5-4806-b5e8-89948fe485c3",
+		"name": "Mute AVR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{avr_service_host}}:{{avr_service_port}}",
+					"host": [
+						"{{avr_service_host}}"
+					],
+					"port": "{{avr_service_port}}"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mute",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3cffb5f0-b6a3-4de2-8db4-316e8953340a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"newMuteStatus\":\"On\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{avr_service_host}}:{{avr_service_port}}/mute",
+					"host": [
+						"{{avr_service_host}}"
+					],
+					"port": "8080",
+					"path": [
+						"mute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Mute Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "98bd3a5f-0eb9-439d-a7df-ea0124d4a4dd",
+						"exec": [
+							"pm.test(\"Mute should be on\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.muteStatus).to.eql('On');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{avr_service_host}}:{{avr_service_port}}",
+					"host": [
+						"{{avr_service_host}}"
+					],
+					"port": "{{avr_service_port}}"
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
