@@ -26,7 +26,7 @@ docker run \
     -p "${AVR_PORT}:${AVR_PORT}" \
     -d \
     --network ${NETWORK_NAME} \
-    --network-alias "foo" \
+    --network-alias ${AVR_NAME} \
     docker.pkg.github.com/jtoussaint/mock-denon-avr/mock-denon-avr:latest
 
 
