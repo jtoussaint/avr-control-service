@@ -40,15 +40,19 @@ docker run \
     run "mute_avr.json" \
     --environment="integration.postman_environment.json"
 
-# Check to see if the tests passed
-if [[ $? -ne 0 ]]
-then
-    echo "Tests failed"
-    exit 1
-fi
+TEST_EXIT_CODE=${?}
+
 
 #
 # Clean up
 #
 docker stop $(docker network inspect -f '{{ range $key, $value := .Containers }}{{printf "%s\n" .Name}}{{ end }}' ${NETWORK_NAME})
 docker network rm ${NETWORK_NAME}
+
+
+# Check to see if the tests passed
+if [[ ${TEST_EXIT_CODE} -ne 0 ]]
+then
+    echo "Tests failed"
+    exit 1
+fi
